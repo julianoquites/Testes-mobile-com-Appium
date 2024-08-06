@@ -11,20 +11,11 @@ export const config = {
   maxInstances: 1,
 
   capabilities: [
-    // {
-    //   platformName: "Android",
-    //   "appium:deviceName": "ebac-qe",
-    //   "appium:platformVersion": "9.0",
-    //   "appium:automationName": "UiAutomator2",
-    //   "appium:app": `${process.cwd()}/app/ebacshop.apks`,
-    //   "appium:appWaitActivity": ".MainActivity",
-    //   "appium:disableIdLocatorAutocompletion": true,
-    // },
     {
       platformName: "Android",
       "appium:app": "storage:filename=ebacshop.aab", // The filename of the mobile app
       "appium:deviceName": "Android GoogleAPI Emulator",
-      "appium:platformVersion": "12.0",
+      "appium:platformVersion": "10.0",
       "appium:automationName": "UiAutomator2",
       "appium:disableIdLocatorAutocompletion": true,
       "sauce:options": {

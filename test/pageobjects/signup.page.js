@@ -35,13 +35,13 @@ class SignupPage {
 
   async signup(firstName, lastName, phoneNumber, email, password, repassword) {
     await this.btnSignup.click();
-    const scrollableElement = await $("//android.widget.ScrollView"); // ou outro elemento que você deseja rolar
+    const scrollableElement = await $("//android.widget.ScrollView");
     await browser
       .action("pointer")
-      .move({ origin: scrollableElement }) // Inicie o movimento a partir do elemento
-      .down() // Pressione o botão (start scrolling)
-      .move({ x: 0, y: -1000 }) // Mova para baixo (ajuste a distância conforme necessário)
-      .up() // Solte o botão (stop scrolling)
+      .move({ origin: scrollableElement })
+      .down() 
+      .move({ x: 0, y: -1000 }) 
+      .up()
       .perform();
     await this.firstName.setValue(firstName);
     await this.lastName.setValue(lastName);

@@ -1,8 +1,8 @@
-import { $, browser } from "@wdio/globals";
+import { $ } from "@wdio/globals";
 
 class SignupPage {
   get btnSignup() {
-    return $("~Sign up");
+    return $("id:signUp");
   }
 
   get firstName() {
@@ -35,20 +35,25 @@ class SignupPage {
 
   async signup(firstName, lastName, phoneNumber, email, password, repassword) {
     await this.btnSignup.click();
-    const scrollableElement = await $("//android.widget.ScrollView");
-    await browser
-      .action("pointer")
-      .move({ origin: scrollableElement })
-      .down() 
-      .move({ x: 0, y: -1000 }) 
-      .up()
-      .perform();
+
+    await this.firstName.click();
     await this.firstName.setValue(firstName);
+
+    await this.lastName.click();
     await this.lastName.setValue(lastName);
+
+    await this.phoneNumber.click();
     await this.phoneNumber.setValue(phoneNumber);
+
+    await this.email.click();
     await this.email.setValue(email);
+
+    await this.password.click();
     await this.password.setValue(password);
+
+    await this.repassword.click();
     await this.repassword.setValue(repassword);
+
     await this.btnCreate.click();
   }
 }

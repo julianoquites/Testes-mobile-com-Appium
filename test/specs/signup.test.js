@@ -1,46 +1,53 @@
-import { driver } from "@wdio/globals";
+
 import { faker } from "@faker-js/faker";
 import homePage from "../pageobjects/home.page.js";
-import loginPage from "../pageobjects/login.page.js";
-import profilePage from "../pageobjects/profile.page.js";
 import signupPage from "../pageobjects/signup.page.js";
 import productPage from "../pageobjects/product.page.js";
 
-describe("My Login application", () => {
-  beforeEach(async () => {
-    // Garante um estado inicial limpo
-    await driver.reset();
+describe("User Registration Flow", () => {
+  let testExecuted = false;
+
+  beforeEach(async function () {
+    if (testExecuted) {
+      this.skip();
+    }
+    await browser.reset();
   });
 
-  it("should login with valid credentials", async () => {
+  it("should complete registration and add product to cart", async () => {
+    testExecuted = true;
+
     try {
       await homePage.openMenu("Account");
+      await browser.pause(1000);
 
+      const testEmail = faker.internet.email();
       await signupPage.signup(
         "John",
         "Doe",
         "11999999999",
-        faker.internet.email(),
+        testEmail,
         "senha123",
         "senha123"
       );
 
-      // Adicione waits explícitos quando necessário
-      await driver.waitUntil(
-        async () => await homePage.isMenuAvailable("Browse"),
-        { timeout: 10000, timeoutMsg: "Menu Browse não ficou disponível" }
-      );
+      // Validação do signup
+      expect(await signupPage.isSignupSuccessful()).toBe(true);
 
       await homePage.openMenu("Browse");
       await homePage.openProduct();
       await productPage.addToCart();
 
-      // Capture screenshot ao final do teste bem-sucedido
-      await driver.saveScreenshot("./screenshots/test-passed.png");
+      // Validações adicionais se necessário
     } catch (error) {
-      // Capture screenshot em caso de erro
-      await driver.saveScreenshot("./screenshots/test-failed.png");
+      console.error("Erro no teste:", error);
       throw error;
+    }
+  });
+
+  afterEach(async () => {
+    if (browser.sessionId) {
+      await browser.deleteSession();
     }
   });
 });

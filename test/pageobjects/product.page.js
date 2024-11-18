@@ -1,21 +1,17 @@
 import { $, browser } from "@wdio/globals";
 
 class ProductPage {
-  async openMenu(menu) {
-    await $(`id:tab-${menu}`).click();
-  }
-  async addToCart() {
-    if (browser.isIOS) {
-      // Usando XPath com predicado para o botão "Adicionar ao Carrinho" no iOS
-      await $(`**/XCUIElementTypeOther[name == "addToCart"]`).click();
-    } else {
-      // ID para Android
-      await $(`id:addToCart`).click();
-    }
+  get addToCartButton() {
+    return browser.isIOS
+      ? $(`**/XCUIElementTypeOther[name == "addToCart"]`)
+      : $("id:addToCart");
   }
 
-  async backFunction() {
-    await browser.back();
+  async addToCart() {
+    await this.addToCartButton.waitForDisplayed({ timeout: 10000 });
+    await this.addToCartButton.waitForClickable({ timeout: 5000 });
+    await this.addToCartButton.click();
+    await browser.pause(1000); // Aguarda processamento
   }
 }
 
